@@ -39,13 +39,12 @@ class CR_Nas{
               <label class="custom-file-label" for="fileInput">Choose file</label>
             </div>
             <div class="input-group-append">
-              <span class="input-group-text" id="upload_delete">Delete</span>
+              <span class="input-group-text" id="upload_delete"><i class="fas fa-backspace"></i> Delete</span>
             </div>
           </div>
         </form>
 
         <div class="row mb-3" id="list_db"></div>
-
 
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
           <h1 class="h2">Dashboard</h1>

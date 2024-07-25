@@ -56,7 +56,25 @@ class CR_Nas_DB{
 
     show_list_db(){
         nas.act_menu("db");
-        $("#box_main").html("sdsd");
+        var html='<table class="table table-striped table-hover table-sm text-left table-responsive">';
+        html+='<tbody id="list_db">';
+        html+='</tbody>';
+        html+='</table>';
+        $("#box_main").html(html);
+
+        $.each(this.list_db,function(index,db){
+            var itemBD=$(`
+                <tr>
+                    <td><i class="fas fa-server"></i> ${db.id}</td>
+                    <td>${db.name}</td>
+                    <td>${db.api_key}</td>
+                </tr>
+            `);
+            $(itemBD).click(()=>{
+                cr_data.info(db);
+            });
+            $("#list_db").append(itemBD);
+        });
     }
 }
 var nas_db=new CR_Nas_DB();
