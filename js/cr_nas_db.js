@@ -53,6 +53,11 @@ class CR_Nas_DB{
     export_all(){
         cr.download(this.list_db,"list_db.json");
     }
+
+    show_list_db(){
+        nas.act_menu("db");
+        $("#box_main").html("sdsd");
+    }
 }
 var nas_db=new CR_Nas_DB();
 nas.db=nas_db;
