@@ -43,7 +43,7 @@ body {
 }
 
 .sidebar .nav-link.active {
-  color: #007bff;
+  color: #4a890d;
 }
 
 .sidebar .nav-link:hover .feather,
@@ -91,3 +91,7 @@ body {
 
 .border-top { border-top: 1px solid #e5e5e5; }
 .border-bottom { border-bottom: 1px solid #e5e5e5; }
+
+.bg-dark {
+  background-color: #4a890d !important;
+}

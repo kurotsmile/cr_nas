@@ -108,14 +108,33 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 
-          <h2>Host Data Clound</h2>
-
-          <div class="row mb-3">
-            <div class="col-3">
-              <button class="btn btn-dark" id="uploadButton"><span data-feather="upload-cloud"></span> Upload</button>
-              <input class="form-control" type="file" id="fileInput">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <h2>Server</h2>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+              <button class="btn btn-sm btn-outline-secondary" onclick="nas.db.add_db();return false"><i class="fas fa-plus-square"></i> Add DB</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="nas.db.import_all();return false">Import</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="nas.db.export_all();return false"><i class="fas fa-file-download"></i> Export</button>
             </div>
           </div>
+          </div>
+
+          <form class="form-inline">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-cloud-upload-alt mr-1"></i>  Upload</span>
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="fileInput">
+                <label class="custom-file-label" for="fileInput">Choose file</label>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text" id="upload_delete">Delete</span>
+              </div>
+            </div>
+          </form>
+
+          <div class="row mb-3" id="list_db"></div>
 
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
             <h1 class="h2">Dashboard</h1>
@@ -123,11 +142,9 @@
               <div class="btn-group mr-2">
                 <button class="btn btn-sm btn-outline-secondary">Share</button>
                 <button class="btn btn-sm btn-outline-secondary">Export</button>
-                <button class="btn btn-sm btn-outline-secondary" onclick="nas.add_db();return false">Add DB</button>
               </div>
               <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <span data-feather="calendar"></span>
-                This week
+                <span data-feather="calendar"></span> This week
               </button>
             </div>
           </div>
