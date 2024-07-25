@@ -160,6 +160,10 @@ class CR_Nas{
         cr.msg("Please Select File","None File","info");
       }
     }
+
+    show_setting(){
+      cr.show_setting();
+    }
 }
 
 var nas;
