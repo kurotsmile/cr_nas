@@ -8,6 +8,7 @@ class CR_Nas{
         cr.add_btn_top();
         this.show_dashboard();
         cr.loadJs("js/cr_nas_file.js","nas_file","onLoad");
+        cr.loadJs("js/cr_nas_link.js","nas_link","onLoad");
     }
 
     act_menu(id){
@@ -103,6 +104,11 @@ class CR_Nas{
     show_all_file(){
       this.act_menu("file");
       nas.file.show_list();
+    }
+
+    show_all_link(){
+      this.act_menu("link");
+      nas.link.show_list();
     }
 }
 

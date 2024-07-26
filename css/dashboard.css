@@ -2,22 +2,26 @@ body {
   font-size: .875rem;
 }
 
+a{
+  color: #4a890d;
+}
+
+a:hover{
+  color: rgb(100, 187, 0);
+}
+
 .feather {
   width: 16px;
   height: 16px;
   vertical-align: text-bottom;
 }
 
-/*
- * Sidebar
- */
-
 .sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 100; /* Behind the navbar */
+  z-index: 100;
   padding: 0;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 }
@@ -25,11 +29,11 @@ body {
 .sidebar-sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 48px; /* Height of navbar */
+  top: 48px;
   height: calc(100vh - 48px);
   padding-top: .5rem;
   overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  overflow-y: auto;
 }
 
 .sidebar .nav-link {
@@ -56,10 +60,6 @@ body {
   text-transform: uppercase;
 }
 
-/*
- * Navbar
- */
-
 .navbar-brand {
   padding-top: .75rem;
   padding-bottom: .75rem;
@@ -84,10 +84,6 @@ body {
   border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
-
-/*
- * Utilities
- */
 
 .border-top { border-top: 1px solid #e5e5e5; }
 .border-bottom { border-bottom: 1px solid #e5e5e5; }
