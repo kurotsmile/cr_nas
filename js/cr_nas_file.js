@@ -42,15 +42,53 @@ class CR_Nas_File{
             var tItemm=$(`
                 <tr>
                     <td><i class="fas fa-file"></i> ${f.name}</td>
-                    <td>${f.size}</td>
+                    <td>${nas.file.formatBytes(f.size)}</td>
                     <td>${f.bucket}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning btn_edit"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger btn_del"><i class="fas fa-trash"></i> Delete</button>
+                    </td>
                 </tr>
                 `);
             $(tItemm).click(()=>{
                 cr_data.info(f);
             });
+
+            $(tItemm).find(".btn_del").click(()=>{
+                nas.file.delete(index);
+                return false;
+            });
+
+            $(tItemm).find(".btn_edit").click(()=>{
+                nas.file.edit(index);
+                return false;
+            });
             $("#list_file").append(tItemm);
         });
+    }
+
+    delete(index){
+        this.list_file.splice(index,1);
+        this.show_list();
+        this.save();
+    }
+
+    edit(index){
+        var objEdit=this.list_file[index];
+        cr_data.edit(objEdit,(data)=>{
+            nas.file.list_file[index]=data;
+            nas.file.show_list();
+            nas.file.save();
+        });
+    }
+
+    formatBytes(bytes, decimals = 2) {
+        if (bytes === 0) return '0 Byte';
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
 }
 

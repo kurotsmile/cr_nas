@@ -22,45 +22,8 @@ class CR_Nas{
         cr.get("dashboard.html",(data)=>{
           $("#box_main").html(data).ready(()=>{
               cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
-              nas.load_char();
+              cr.loadJs("js/cr_nas_chart.js","nas_chart","load_char");
           });
-        });
-    }
-
-    load_char(){
-        var ctx = document.getElementById("myChart");
-        var myChart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            datasets: [{
-              data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-              lineTension: 0,
-              backgroundColor: 'transparent',
-              borderColor: '#808836',
-              borderWidth: 4,
-              pointBackgroundColor: '#808836'
-            },{
-              data: [15339, 20, 100, 22, 33, 24092, 500],
-              lineTension: 0,
-              backgroundColor: 'transparent',
-              borderColor: '#73BBA3',
-              borderWidth: 4,
-              pointBackgroundColor: '#73BBA3'
-            }]
-          },
-          options: {
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero: false
-                }
-              }]
-            },
-            legend: {
-              display: false,
-            }
-          }
         });
     }
 

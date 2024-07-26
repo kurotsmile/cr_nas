@@ -54,6 +54,10 @@ class CR_Nas_Link{
         html+='</div>';
         $("#box_main").html(html);
 
+        this.list_link.sort(function(a, b) {
+            return new Date(b.date_create) - new Date(a.date_create);
+        });
+        
         $.each(this.list_link,function(index,l){
             var tItemm=$(`
                 <tr>
