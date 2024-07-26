@@ -59,6 +59,7 @@ class CR_Nas_Link{
                     <td><a href="${l.url}" target="_blank">${l.url}</a></td>
                     <td>${l.date_create}</td>
                     <td>
+                        <button class="btn btn-sm btn-info btn_check"><i class="fas fa-check-double"></i> Check</button>
                         <button class="btn btn-sm btn-warning btn_edit"><i class="fas fa-edit"></i> Edit</button>
                         <button class="btn btn-sm btn-danger btn_del"><i class="fas fa-trash"></i> Delete</button>
                     </td>
@@ -75,6 +76,11 @@ class CR_Nas_Link{
 
             $(tItemm).find(".btn_edit").click(()=>{
                 nas.link.edit(index);
+                return false;
+            });
+
+            $(tItemm).find(".btn_check").click(()=>{
+                nas.check(l.url);
                 return false;
             });
 

@@ -110,6 +110,21 @@ class CR_Nas{
       this.act_menu("link");
       nas.link.show_list();
     }
+
+    check(url) {
+      fetch(url, { method: 'HEAD' })
+        .then(response => {
+          if (response.ok) {
+            cr.msg("File Good","Check File","success");
+          } else {
+            cr.msg(`File at ${url} does not exist. Status: ${response.status}`,"Check File","error");
+          }
+        })
+        .catch(error => {
+          console.error();
+          cr.msg(`Error checking file status: ${error}`,"Check File","error");
+        });
+    }
 }
 
 var nas;
