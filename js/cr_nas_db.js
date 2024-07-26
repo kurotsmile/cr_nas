@@ -56,10 +56,24 @@ class CR_Nas_DB{
 
     show_list_db(){
         nas.act_menu("db");
-        var html='<table class="table table-striped table-hover table-sm text-left table-responsive">';
-        html+='<tbody id="list_db">';
-        html+='</tbody>';
+        var html='';
+        html+='<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">';
+
+        html+='<h2 class="h2 text-left">Database Manager</h2>';
+            html+='<div class="btn-toolbar mb-2 mb-md-0">';
+            html+='<div class="btn-group mr-2">';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.add_db();return false"><i class="fas fa-plus-square"></i> Add DB</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.import_all();return false">Import</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.export_all();return false"><i class="fas fa-file-download"></i> Export</button>';
+            html+='</div>';
+            html+='</div>';
+        html+='</div>';
+
+        html+='<table class="table table-striped table-hover table-sm text-left table-responsive">';
+        html+='<tbody id="list_db"></tbody>';
         html+='</table>';
+
+        html+='</div>';
         $("#box_main").html(html);
 
         $.each(this.list_db,function(index,db){

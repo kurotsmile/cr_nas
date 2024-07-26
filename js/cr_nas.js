@@ -7,6 +7,7 @@ class CR_Nas{
         cr.setColor("#88D66C");
         cr.add_btn_top();
         this.show_dashboard();
+        cr.loadJs("js/cr_nas_file.js","nas_file","onLoad");
     }
 
     act_menu(id){
@@ -17,78 +18,11 @@ class CR_Nas{
 
     show_dashboard(){
         this.act_menu("dashboard");
-        var html=`
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h2 class="h2 text-left">Server</h2>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button class="btn btn-sm btn-outline-secondary" onclick="nas.db.add_db();return false"><i class="fas fa-plus-square"></i> Add DB</button>
-            <button class="btn btn-sm btn-outline-secondary" onclick="nas.db.import_all();return false">Import</button>
-            <button class="btn btn-sm btn-outline-secondary" onclick="nas.db.export_all();return false"><i class="fas fa-file-download"></i> Export</button>
-          </div>
-        </div>
-        </div>
-
-        <form class="form-inline">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text"><i class="fas fa-cloud-upload-alt mr-1"></i>  Upload</span>
-            </div>
-            <div class="custom-file">
-              <input type="file" class="custom-file-input" id="fileInput">
-              <label class="custom-file-label" for="fileInput">Choose file</label>
-            </div>
-            <div class="input-group-append">
-              <span class="input-group-text" id="upload_delete"><i class="fas fa-backspace"></i> Delete</span>
-            </div>
-          </div>
-        </form>
-
-        <div class="row mb-3" id="list_db"></div>
-
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-          <h1 class="h2">Dashboard</h1>
-          <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-              <button class="btn btn-sm btn-outline-secondary">Share</button>
-              <button class="btn btn-sm btn-outline-secondary">Export</button>
-            </div>
-            <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-              <span data-feather="calendar"></span> This week
-            </button>
-          </div>
-        </div>
-
-        <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
-
-        <h2><i data-feather="clock" class="fs-5"></i> Recently uploaded files</h2>
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-                <th>Header</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1,001</td>
-                <td>Lorem</td>
-                <td>ipsum</td>
-                <td>dolor</td>
-                <td>sit</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        `;
-        $("#box_main").html(html).ready(()=>{
-            cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
-            nas.load_char();
+        cr.get("dashboard.html",(data)=>{
+          $("#box_main").html(data).ready(()=>{
+              cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
+              nas.load_char();
+          });
         });
     }
 
@@ -149,6 +83,7 @@ class CR_Nas{
               },
               success: function(response) {
                   console.log('Upload successful', response);
+                  nas.file.add(response);
                   cr.msg('Upload successful',"Upload File","success");
               },
               error: function(jqXHR, textStatus, errorThrown) {
@@ -163,6 +98,11 @@ class CR_Nas{
 
     show_setting(){
       cr.show_setting();
+    }
+
+    show_all_file(){
+      this.act_menu("file");
+      nas.file.show_list();
     }
 }
 
