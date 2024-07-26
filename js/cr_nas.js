@@ -6,9 +6,12 @@ class CR_Nas{
         cr.onLoad();
         cr.setColor("#88D66C");
         cr.add_btn_top();
-        this.show_dashboard();
+        cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
         cr.loadJs("js/cr_nas_file.js","nas_file","onLoad");
         cr.loadJs("js/cr_nas_link.js","nas_link","onLoad");
+        setTimeout(()=>{
+          nas.show_dashboard();
+        },500)
     }
 
     act_menu(id){
@@ -21,7 +24,7 @@ class CR_Nas{
         this.act_menu("dashboard");
         cr.get("dashboard.html",(data)=>{
           $("#box_main").html(data).ready(()=>{
-              cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
+              nas.db.show_list_for_dashboard();
               cr.loadJs("js/cr_nas_chart.js","nas_chart","load_char");
           });
         });

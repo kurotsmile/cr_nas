@@ -4,15 +4,19 @@ class CR_Nas_DB{
 
     onLoad(){
         if(localStorage.getItem("list_db")!=null) this.list_db=JSON.parse(localStorage.getItem("list_db"));
+    }
 
+    show_list_for_dashboard(){
         $.each(this.list_db,function(index,db){
             db["index"]=index;
             var dbServerItem=$(`
                 <div class="col-6 col-md-3 col-lg-3">
                     <div role="button" class="card bg-dark border-rounder text-white w-100">
                     <div class="card-body">
-                        <div class="card-title"><i class="fas fa-server"></i> ${db.name}</div>
-                        <div class="card-text">${db.id}</div>
+                        <h5 class="card-title"><i class="fas fa-server"></i> ${db.name}</h5>
+                        <small class="card-text"><i class="fas fa-drum-steelpan"></i> ${db.id}
+                            <i class="fas fa-database"></i> size:${nas.file.formatBytes(nas.file.SizePerBucket[db.id])}
+                        </small>
                         <button class="btn btn-sm btn-dark btn_edit"><i class="fas fa-edit"></i> Edit</button>
                     </div>
                     </div>
@@ -39,9 +43,9 @@ class CR_Nas_DB{
             "id_sys":"db"+cr.create_id(4)
         };
         cr_data.edit(data_db_new,(data)=>{
-            console.log(data);
-            nas.list_db.push(data);
-            localStorage.setItem("list_db",JSON.stringify(nas.list_db));
+            nas.db.list_db.push(data);
+            nas.db.save();
+            nas.db.show_list_db();
             cr.msg("Add databas success!","Add Db","Success");
         });
     }
@@ -84,12 +88,41 @@ class CR_Nas_DB{
                     <td><i class="fas fa-server"></i> ${db.id}</td>
                     <td>${db.name}</td>
                     <td>${db.api_key}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning btn_edit"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-sm btn-danger btn_del"><i class="fas fa-trash"></i> Delete</button>
+                    </td>
                 </tr>
             `);
             $(itemBD).click(()=>{
                 cr_data.info(db);
             });
+
+            $(itemBD).find(".btn_del").click(()=>{
+                nas.db.delete(index);
+                return false;
+            });
+
+            $(itemBD).find(".btn_edit").click(()=>{
+                nas.db.edit(index);
+                return false;
+            });
             $("#list_db").append(itemBD);
+        });
+    }
+
+    delete(index){
+        this.list_db.splice(index,1);
+        this.show_list_db();
+        this.save();
+    }
+
+    edit(index){
+        var objEdit=this.list_db[index];
+        cr_data.edit(objEdit,(data)=>{
+            nas.db.list_db[index]=data;
+            nas.db.show_list_db();
+            nas.db.save();
         });
     }
 

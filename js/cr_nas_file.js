@@ -1,9 +1,15 @@
 class CR_Nas_File{
 
     list_file=[];
-
+    SizePerBucket=null;
+    
     onLoad(){
         if(localStorage.getItem("list_file")!=null) this.list_file=JSON.parse(localStorage.getItem("list_file"));
+        this.update_SizePerBucket();
+    }
+
+    update_SizePerBucket(){
+        this.SizePerBucket=this.calculateTotalSizePerBucket(this.list_file);
     }
 
     add(data){
@@ -16,6 +22,7 @@ class CR_Nas_File{
     }
 
     show_list(){
+        this.update_SizePerBucket();
         var html='';
         html+='<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">';
 
@@ -45,6 +52,7 @@ class CR_Nas_File{
                     <td>${nas.file.formatBytes(f.size)}</td>
                     <td>${f.bucket}</td>
                     <td>
+                        <button class="btn btn-sm btn-success btn_link"><i class="fas fa-external-link-alt"></i> Open</button>
                         <button class="btn btn-sm btn-warning btn_edit"><i class="fas fa-edit"></i> Edit</button>
                         <button class="btn btn-sm btn-danger btn_del"><i class="fas fa-trash"></i> Delete</button>
                     </td>
@@ -61,6 +69,11 @@ class CR_Nas_File{
 
             $(tItemm).find(".btn_edit").click(()=>{
                 nas.file.edit(index);
+                return false;
+            });
+
+            $(tItemm).find(".btn_link").click(()=>{
+                nas.file.open_file(f.bucket,f.name,f.downloadTokens);
                 return false;
             });
             $("#list_file").append(tItemm);
@@ -90,6 +103,24 @@ class CR_Nas_File{
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
+
+    open_file(id_spot,path_file,token){
+        window.open("https://firebasestorage.googleapis.com/v0/b/"+id_spot+"/o/"+path_file+"?alt=media&token="+token,"_blank");
+    }
+
+    calculateTotalSizePerBucket = (files) => {
+        return files.reduce((acc, file) => {
+            const bucket = file.bucket;
+            const size = parseInt(file.size, 10);
+    
+            if (!acc[bucket]) {
+                acc[bucket] = 0;
+            }
+    
+            acc[bucket] += size;
+            return acc;
+        }, {});
+    };
 }
 
 var nas_file=new CR_Nas_File();
