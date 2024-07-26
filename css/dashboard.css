@@ -91,3 +91,11 @@ a:hover{
 .bg-dark {
   background-color: #4a890d !important;
 }
+
+.table .td_link{
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

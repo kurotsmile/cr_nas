@@ -125,6 +125,60 @@ class CR_Nas{
           cr.msg(`Error checking file status: ${error}`,"Check File","error");
         });
     }
+
+    export(){
+      var objExport={};
+      objExport["list_db"]=nas.db.list_db;
+      objExport["list_file"]=nas.file.list_file;
+      objExport["list_link"]=nas.link.list_link;
+      cr.download(objExport,"backup.json");
+    }
+
+    import(){
+      var formImport=$(`
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <h2 class="h2 text-left">Import</h2>
+        </div>
+
+        <form class="form-inline">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-cloud-upload-alt mr-1"></i>  Upload</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" class="custom-file-input" id="fileUpload">
+              <label class="custom-file-label" for="fileInput">Choose file</label>
+            </div>
+          </div>
+        </form>
+        
+      `);
+      $("#box_main").html("");
+      $("#box_main").append(formImport);
+
+      $('#fileUpload').on('change', function(event) {
+        var file = event.target.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    var jsonContent = JSON.parse(e.target.result);
+                    //cr_data.info(jsonContent);
+                    nas.db.list_db=jsonContent["list_db"];
+                    nas.link.list_link=jsonContent["list_link"];
+                    nas.file.list_file=jsonContent["list_file"];
+                    nas.db.save();
+                    nas.link.save();
+                    nas.file.save();
+                    Swal.close();
+                } catch (error) {
+                    cr.msg(error,"Error","error");
+                }
+            };
+            reader.readAsText(file);
+        }
+      });
+    }
 }
 
 var nas;

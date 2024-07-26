@@ -29,9 +29,11 @@ class CR_Nas_File{
             html+='</div>';
         html+='</div>';
 
-        html+='<table class="table table-striped table-hover table-sm text-left table-responsive">';
+        html+='<div class="table-responsive">';
+        html+='<table class="table table-striped table-hover table-sm text-left">';
         html+='<tbody id="list_file"></tbody>';
         html+='</table>';
+        html+='</div>';
 
         html+='</div>';
         $("#box_main").html(html);

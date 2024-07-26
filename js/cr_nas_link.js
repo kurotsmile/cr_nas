@@ -38,15 +38,18 @@ class CR_Nas_Link{
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
             html+='<div class="btn-group mr-2">';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.show_add();return false"><i class="fas fa-plus-square"></i> Add Link</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.paste();return false"><i class="fas fa-clipboard"></i> Paste clipboard</button>';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.import_all();return false">Import</button>';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.export_all();return false"><i class="fas fa-file-download"></i> Export</button>';
             html+='</div>';
             html+='</div>';
         html+='</div>';
 
-        html+='<table class="table table-striped table-hover table-sm text-left table-responsive">';
-        html+='<tbody id="list_file"></tbody>';
-        html+='</table>';
+        html+='<div class="table-responsive">';
+            html+='<table class="table table-striped table-hover table-sm text-left">';
+            html+='<tbody id="list_file"></tbody>';
+            html+='</table>';
+        html+='</div>';
 
         html+='</div>';
         $("#box_main").html(html);
@@ -56,7 +59,7 @@ class CR_Nas_Link{
                 <tr>
                     <td><i class="fas fa-link"></i></td>
                     <td>${l.note}</td>
-                    <td><a href="${l.url}" target="_blank">${l.url}</a></td>
+                    <td class="td_link" title="${l.url}"><a href="${l.url}" target="_blank">${l.url}</a></td>
                     <td>${l.date_create}</td>
                     <td>
                         <button class="btn btn-sm btn-info btn_check"><i class="fas fa-check-double"></i> Check</button>
@@ -100,6 +103,26 @@ class CR_Nas_Link{
             nas.link.list_link[index]=data;
             nas.link.show_list();
             nas.link.save();
+        });
+    }
+
+    paste(){
+        cr.paste(null,(txt)=>{
+            var urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,6})(\/[a-zA-Z0-9.-]*)*(\?[a-zA-Z0-9&=]*)?$/;
+                if (urlPattern.test(txt)) {
+                    var id_link="link"+cr.create_id(5);
+                    var linkData={
+                        "id_sys":id_link,
+                        "url":txt,
+                        "note":id_link,
+                        "date_create":cr_data.convertISOToLocalDatetime()
+                    };
+                    nas.link.list_link.push(linkData);
+                    nas.link.save();
+                    nas.link.show_list();
+                } else {
+                    cr.msg("Link Not Fomat!","Paste Link","error");
+                }
         });
     }
 }

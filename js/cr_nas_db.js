@@ -69,9 +69,11 @@ class CR_Nas_DB{
             html+='</div>';
         html+='</div>';
 
-        html+='<table class="table table-striped table-hover table-sm text-left table-responsive">';
-        html+='<tbody id="list_db"></tbody>';
-        html+='</table>';
+        html+='<div class="table-responsive">';
+            html+='<table class="table table-striped table-hover table-sm text-left">';
+            html+='<tbody id="list_db"></tbody>';
+            html+='</table>';
+        html+='</div>';
 
         html+='</div>';
         $("#box_main").html(html);
@@ -89,6 +91,10 @@ class CR_Nas_DB{
             });
             $("#list_db").append(itemBD);
         });
+    }
+
+    save(){
+        localStorage.setItem("list_db",JSON.stringify(this.list_db));
     }
 }
 var nas_db=new CR_Nas_DB();
