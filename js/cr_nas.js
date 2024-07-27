@@ -145,6 +145,11 @@ class CR_Nas{
         }
       });
     }
+
+    show_lang_db(){
+      this.act_menu("lang-db");
+      cr.loadJs("js/cr_nas_langdb.js","Nas_langDB","show");
+    }
 }
 
 var nas;
