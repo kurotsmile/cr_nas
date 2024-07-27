@@ -11,12 +11,15 @@ class CR_Nas_LangDB{
     obj_lang_default={"key":"test"};
     list_country=null;
 
+    type_import="all";
+
     show(){
         var html='';
 
         html+='<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">';
             html+='<h2 class="h2 text-left">Lang Config Editor</h2>';
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
+
                 html+='<div class="btn-group mr-2">';
                     html+='<form class="form-inline">';
                     html+='<div class="input-group">';
@@ -29,6 +32,9 @@ class CR_Nas_LangDB{
                         html+='</div>';
                         html+='</div>';
                     html+=' </form>';
+
+                    html+='<button id="btntypeimportall" class="btn btn-sm btn-secondary m-type-import '+(this.type_import==='all'? "active":"all")+'" onclick="Nas_langDB.set_type_impot(\'all\');return false"><i class="fas fa-border-all"></i> All Lang</button>';
+                    html+='<button id="btntypeimportone" class="btn btn-sm btn-secondary m-type-import '+(this.type_import==='one'? "active":"one")+'" onclick="Nas_langDB.set_type_impot(\'one\');return false"><i class="far fa-square"></i> One Lang</button>';
                 html+='</div>';
 
                 html+='<div class="btn-group mr-2">';
@@ -156,6 +162,12 @@ class CR_Nas_LangDB{
             }
             Nas_langDB.loadByObject();
         });
+    }
+
+    set_type_impot(type){
+        this.type_import=type;
+        $(".m-type-import").removeClass("active");
+        $("#btntypeimport"+type).addClass("active");
     }
 }
 var Nas_langDB=new CR_Nas_LangDB();
