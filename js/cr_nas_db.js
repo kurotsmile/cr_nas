@@ -25,6 +25,7 @@ class CR_Nas_DB{
 
             $(dbServerItem).find(".btn_edit").click(()=>{
                 cr_data.edit(db);
+                nas.add_log(db,"db");
                 return false;
             });
 

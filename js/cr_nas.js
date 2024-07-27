@@ -163,10 +163,14 @@ class CR_Nas{
       $("#list_log").html('');
       this.log_obj.reverse();
       $.each(this.log_obj,function(index,o){
+          var icon='<i class="fas fa-box"></i>';
+          if(o.type_sys=="link") icon='<i class="fas fa-link"></i>';
+          if(o.type_sys=="db") icon='<i class="fas fa-server"></i>';
+          if(o.type_sys=="file") icon='<i class="fas fa-file"></i>';
           var item_log=$(`
               <li class="nav-item">
                 <a class="nav-link name_log">
-                  <i class="fas fa-box"></i> ${o.type_sys}
+                  ${icon} ${o.type_sys}
                 </a>
               </li>
           `);
