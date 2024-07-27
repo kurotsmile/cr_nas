@@ -2,6 +2,8 @@ class CR_Nas{
 
     menu_cur="dashboard";
 
+    log_obj=[];
+
     onLoad(){
         cr.onLoad();
         cr.setColor("#88D66C");
@@ -149,6 +151,36 @@ class CR_Nas{
     show_lang_db(){
       this.act_menu("lang-db");
       cr.loadJs("js/cr_nas_langdb.js","Nas_langDB","show");
+    }
+
+    add_log(data,type_sys="object"){
+      data["type_sys"]=type_sys;
+      this.log_obj.push(data);
+      this.show_log();
+    }
+
+    show_log(){
+      $("#list_log").html('');
+      this.log_obj.reverse();
+      $.each(this.log_obj,function(index,o){
+          var item_log=$(`
+              <li class="nav-item">
+                <a class="nav-link name_log">
+                  <i class="fas fa-box"></i> ${o.type_sys}
+                </a>
+              </li>
+          `);
+          $(item_log).click(()=>{
+            cr_data.info(o);
+          });
+          $("#list_log").append(item_log);
+      });
+    }
+
+    clear_log(){
+      $("#list_log").html('');
+      this.log_obj=[];
+      $("#list_log").html('<li class="nav-item"><a class="nav-link text-muted" ><i class="fas fa-hands-wash"></i> None Item</a></li>');
     }
 }
 

@@ -18,6 +18,7 @@ class CR_Nas_Link{
                 nas.link.list_link.push(data);
                 nas.link.save();
                 nas.link.show_list();
+                nas.add_log(data,"link");
                 cr.msg("Add link success!","Add Link","success");
             }else{
                 cr.msg("Url link not null!","Add link fail","error");
@@ -74,6 +75,7 @@ class CR_Nas_Link{
                 `);
             $(tItemm).click(()=>{
                 cr_data.info(l);
+                nas.add_log(l,"link");
             });
 
             $(tItemm).find(".btn_del").click(()=>{
@@ -112,8 +114,7 @@ class CR_Nas_Link{
 
     paste(){
         cr.paste(null,(txt)=>{
-            var urlPattern = /^(https?:\/\/)?([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,6})(\/[a-zA-Z0-9.-]*)*(\?[a-zA-Z0-9&=]*)?$/;
-                if (urlPattern.test(txt)) {
+                if (nas.link.isValidUrl(txt)) {
                     var id_link="link"+cr.create_id(5);
                     var linkData={
                         "id_sys":id_link,
@@ -124,10 +125,20 @@ class CR_Nas_Link{
                     nas.link.list_link.push(linkData);
                     nas.link.save();
                     nas.link.show_list();
+                    nas.add_log(linkData,'link');
                 } else {
                     cr.msg("Link Not Fomat!","Paste Link","error");
                 }
         });
+    }
+
+    isValidUrl(url) {
+        try {
+            new URL(url);
+            return true;
+        } catch (_) {
+            return false; 
+        }
     }
 }
 

@@ -17,7 +17,7 @@ class CR_Nas_LangDB{
         var html='';
 
         html+='<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">';
-            html+='<h2 class="h2 text-left">Lang Config Editor</h2>';
+            html+='<h2 class="h2 text-left">Lang Config Editor ('+this.lang+')</h2>';
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
 
                 html+='<div class="btn-group mr-2">';
@@ -35,6 +35,7 @@ class CR_Nas_LangDB{
 
                     html+='<button id="btntypeimportall" class="btn btn-sm btn-secondary m-type-import '+(this.type_import==='all'? "active":"all")+'" onclick="Nas_langDB.set_type_impot(\'all\');return false"><i class="fas fa-border-all"></i> All Lang</button>';
                     html+='<button id="btntypeimportone" class="btn btn-sm btn-secondary m-type-import '+(this.type_import==='one'? "active":"one")+'" onclick="Nas_langDB.set_type_impot(\'one\');return false"><i class="far fa-square"></i> One Lang</button>';
+                    html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.langDB.paste_object();return false"><i class="fas fa-clipboard"></i> Paste clipboard</button>';
                 html+='</div>';
 
                 html+='<div class="btn-group mr-2">';
@@ -50,7 +51,12 @@ class CR_Nas_LangDB{
             html+='<div class="table table-striped table-hover table-sm text-left" id="list_db_field"></div>';
         html+='</div>';
 
-        html+='<div class="table-responsive" id="list_btn"><button onClick="Nas_langDB.save();" class="btn btn-lg btn-success">Save</button></div>';
+        html+='<div class="table-responsive" id="list_btn">';
+            html+='<button onClick="Nas_langDB.save();" class="btn btn-lg btn-success m-1"><i class="fas fa-save"></i> Save</button>';
+            html+='<button class="btn btn-lg btn-success m-1" onclick="Nas_langDB.export();return false"><i class="fas fa-file-download"></i> Export</button>';
+            html+='<button onClick="Nas_langDB.download_obj_json_cur();" class="btn btn-light m-1"><i class="fas fa-file-download"></i> Download Object Curnet</button>';
+            html+='<button class="btn btn-light m-1" onclick="nas.langDB.paste_object();return false"><i class="fas fa-clipboard"></i> Paste clipboard</button>';
+        html+='</div>';
         $("#box_main").html(html);
         $('#fileInput').on('change', function(event) {
             var file = event.target.files[0];
@@ -60,17 +66,14 @@ class CR_Nas_LangDB{
                     try {
                         var jsonContent = JSON.parse(e.target.result);
                         if (typeof jsonContent === 'object') {
-                            if (Array.isArray(jsonContent)) {
+                            if(Nas_langDB.type_import=="all"){
                                 Nas_langDB.lang="en";
                                 Nas_langDB.obj_lang=jsonContent;
                                 Nas_langDB.loadByObject(jsonContent);
-                            } else if (jsonContent === null) {
-                                cr.msg("File config lang là object trống","Import","error");
-                            } else {
-                                Nas_langDB.lang="en";
-                                Nas_langDB.obj_lang=jsonContent;
-                                Nas_langDB.loadByObject(jsonContent);
+                            }else{
+                                Nas_langDB.import_object_json_one(jsonContent);
                             }
+    
                         } else {
                             cr.msg("File config lang không đúng định dạng","Import","error");
                         }
@@ -82,6 +85,13 @@ class CR_Nas_LangDB{
             }
           });
         this.loadByObject();
+    }
+
+    import_object_json_one(data){
+        $(".inp_db").each(function(index,emp){
+            var k=$(emp).attr("db-key");
+            if(data[k]!=null) $(emp).val(data[k]);
+        });
     }
 
     loadListLang(){
@@ -107,7 +117,7 @@ class CR_Nas_LangDB{
                 $(".m-lang").removeClass("active");
                 $(this).addClass("active");
                 Nas_langDB.lang=c.key;
-                Nas_langDB.loadByObject();
+                Nas_langDB.show();
             });
             $("#list_country").append(itemC);
         });
@@ -139,7 +149,7 @@ class CR_Nas_LangDB{
             });
         if(this.obj_lang==null)this.obj_lang={};
         this.obj_lang[this.lang]=db;
-        cr.msg("Save success!","Langs","success");
+        cr.msg("Save success ("+this.lang+")!","Langs","success");
         this.loadListLang();
     }
 
@@ -168,6 +178,23 @@ class CR_Nas_LangDB{
         this.type_import=type;
         $(".m-type-import").removeClass("active");
         $("#btntypeimport"+type).addClass("active");
+    }
+
+    download_obj_json_cur(){
+        var db={};
+        $(".inp_db").each(function(index,emp){
+            var k=$(emp).attr("db-key");
+            db[k]=$(emp).val();
+        });
+        cr.download(db,"object.json");
+        Nas_langDB.set_type_impot("one");
+    }
+
+    paste_object(){
+        cr.paste(null,(txt)=>{
+            Nas_langDB.import_object_json_one(JSON.parse(txt));
+            nas.add_log(JSON.parse(txt));
+        });
     }
 }
 var Nas_langDB=new CR_Nas_LangDB();

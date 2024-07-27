@@ -60,6 +60,7 @@ class CR_Nas_File{
                 `);
             $(tItemm).click(()=>{
                 cr_data.info(f);
+                nas.add_log(f,'file');
             });
 
             $(tItemm).find(".btn_del").click(()=>{
