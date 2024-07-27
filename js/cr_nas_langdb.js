@@ -32,7 +32,7 @@ class CR_Nas_LangDB{
                 html+='</div>';
 
                 html+='<div class="btn-group mr-2">';
-                    html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.add_db();return false"><i class="fas fa-plus-square"></i> Add Field</button>';
+                    html+='<button class="btn btn-sm btn-outline-secondary" onclick="Nas_langDB.show_add_field();return false"><i class="fas fa-plus-square"></i> Add Field</button>';
                     html+='<button class="btn btn-sm btn-outline-secondary" onclick="Nas_langDB.export();return false"><i class="fas fa-file-download"></i> Export</button>';
                 html+='</div>';
             html+='</div>';
@@ -120,7 +120,7 @@ class CR_Nas_LangDB{
         $.each(this.obj_lang_default,function(k,v){
             var val_field='';
             if(objCur[k]!=null) val_field=objCur[k];
-            $("#list_db_field").append(cr_data.itemField(k,val_field));
+            $("#list_db_field").append(cr_data.itemField(k,val_field,null,v));
         });
     }
 
@@ -134,6 +134,7 @@ class CR_Nas_LangDB{
         if(this.obj_lang==null)this.obj_lang={};
         this.obj_lang[this.lang]=db;
         cr.msg("Save success!","Langs","success");
+        this.loadListLang();
     }
 
     export(){
@@ -142,6 +143,19 @@ class CR_Nas_LangDB{
         }else{
             cr.msg("Not data","Langs","error");
         }
+    }
+    
+    show_add_field(){
+        cr.input("Add new Field",'Key new',(val)=>{
+            if(Nas_langDB.obj_lang==null){
+                Nas_langDB.obj_lang={};
+                Nas_langDB.obj_lang["en"]={};
+                Nas_langDB.obj_lang["en"][val]="";
+            }else{
+                Nas_langDB.obj_lang["en"][val]="";
+            }
+            Nas_langDB.loadByObject();
+        });
     }
 }
 var Nas_langDB=new CR_Nas_LangDB();
