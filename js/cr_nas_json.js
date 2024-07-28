@@ -53,12 +53,13 @@ class CR_Nas_Json {
                 return false;
             });
 
-            if (d.link !== "" && d.link != null) {
-                let btn_link = $('<button class="btn btn-sm btn-success btn_link"><i class="fas fa-external-link-alt"></i> Open</button>');
-                $(btn_link).click(() => {
-                    window.open(d.link, "_blank");
+            if (d.data !== "" && d.data != null) {
+                let btn_data = $('<button class="btn btn-sm btn-success btn_data"><i class="fas fa-database"></i> Data</button>');
+                $(btn_data).click(() => {
+                    cr_data.edit(d.data);
+                    return false;
                 });
-                $(dataItem).find(".tr_list_btn").append(btn_link);
+                $(dataItem).find(".tr_list_btn").append(btn_data);
             }
 
             $("#list_data").append(dataItem);
