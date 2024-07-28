@@ -26,13 +26,22 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
       <h1 class="h2">Dashboard</h1>
       <div class="btn-toolbar mb-2 mb-md-0">
+
+        <div class="dropdown mr-2">
+          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+            <span data-feather="calendar"></span> This week
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
+
         <div class="btn-group mr-2">
           <button class="btn btn-sm btn-outline-secondary" onclick="nas.chart.show_chart_line();return false;"><i class="fas fa-chart-line"></i> Line</button>
           <button class="btn btn-sm btn-outline-secondary" onclick="nas.chart.show_chart_bar();return false;"><i class="fas fa-chart-bar"></i> Bar</button>
         </div>
-        <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-          <span data-feather="calendar"></span> This week
-        </button>
       </div>
     </div>
 

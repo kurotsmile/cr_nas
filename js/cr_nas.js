@@ -6,11 +6,13 @@ class CR_Nas{
 
     onLoad(){
         cr.onLoad();
+        cr.setVer("0.0.2");
         cr.setColor("#88D66C");
         cr.add_btn_top();
         cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
         cr.loadJs("js/cr_nas_file.js","nas_file","onLoad");
         cr.loadJs("js/cr_nas_link.js","nas_link","onLoad");
+        cr.loadJs("js/cr_nas_tag.js","nas_tag","onLoad");
         setTimeout(()=>{
           nas.show_dashboard();
         },500)
@@ -24,7 +26,7 @@ class CR_Nas{
 
     show_dashboard(){
         this.act_menu("dashboard");
-        cr.get("dashboard.html",(data)=>{
+        cr.get("dashboard.html?v="+cr.ver,(data)=>{
           $("#box_main").html(data).ready(()=>{
               nas.db.show_list_for_dashboard();
               cr.loadJs("js/cr_nas_chart.js","nas_chart","load_char");
@@ -99,6 +101,7 @@ class CR_Nas{
       objExport["list_db"]=nas.db.list_db;
       objExport["list_file"]=nas.file.list_file;
       objExport["list_link"]=nas.link.list_link;
+      objExport["list_tag"]=nas.tag.list_tag;
       cr.download(objExport,"backup.json");
     }
 
@@ -131,13 +134,26 @@ class CR_Nas{
             reader.onload = function(e) {
                 try {
                     var jsonContent = JSON.parse(e.target.result);
-                    //cr_data.info(jsonContent);
-                    nas.db.list_db=jsonContent["list_db"];
-                    nas.link.list_link=jsonContent["list_link"];
-                    nas.file.list_file=jsonContent["list_file"];
-                    nas.db.save();
-                    nas.link.save();
-                    nas.file.save();
+                    if(jsonContent["list_db"]){
+                        nas.db.list_db=jsonContent["list_db"];
+                        nas.db.save();
+                    }
+
+                    if(jsonContent["list_link"]){
+                      nas.link.list_link=jsonContent["list_link"];
+                      nas.link.save();
+                    }
+
+                    if(jsonContent["list_file"]){
+                      nas.file.list_file=jsonContent["list_file"];
+                      nas.file.save();
+                    }
+
+                    if(jsonContent["list_tag"]){
+                      nas.tag.list_tag=jsonContent["list_tag"];
+                      nas.tag.save();
+                    }
+                    
                     Swal.close();
                 } catch (error) {
                     cr.msg(error,"Error","error");
@@ -185,6 +201,11 @@ class CR_Nas{
       $("#list_log").html('');
       this.log_obj=[];
       $("#list_log").html('<li class="nav-item"><a class="nav-link text-muted" ><i class="fas fa-hands-wash"></i> None Item</a></li>');
+    }
+
+    show_tag(){
+      this.act_menu("tag");
+      nas.tag.show_list();
     }
 }
 
