@@ -13,6 +13,7 @@ class CR_Nas{
         cr.loadJs("js/cr_nas_file.js","nas_file","onLoad");
         cr.loadJs("js/cr_nas_link.js","nas_link","onLoad");
         cr.loadJs("js/cr_nas_tag.js","nas_tag","onLoad");
+        cr.loadJs("js/cr_nas_json.js","nas_json","onLoad");
         setTimeout(()=>{
           nas.show_dashboard();
         },500)
@@ -102,6 +103,7 @@ class CR_Nas{
       objExport["list_file"]=nas.file.list_file;
       objExport["list_link"]=nas.link.list_link;
       objExport["list_tag"]=nas.tag.list_tag;
+      objExport["list_json"]=nas.json.list_data;
       cr.download(objExport,"backup.json");
     }
 
@@ -152,6 +154,11 @@ class CR_Nas{
                     if(jsonContent["list_tag"]){
                       nas.tag.list_tag=jsonContent["list_tag"];
                       nas.tag.save();
+                    }
+
+                    if(jsonContent["list_json"]){
+                      nas.json.list_data=jsonContent["list_json"];
+                      nas.json.save();
                     }
                     
                     Swal.close();
@@ -206,6 +213,11 @@ class CR_Nas{
     show_tag(){
       this.act_menu("tag");
       nas.tag.show_list();
+    }
+
+    show_json(){
+      this.act_menu("json");
+      nas.json.show_list();
     }
 }
 

@@ -6,7 +6,8 @@ class CR_Nas_Chart{
         var allData={};
         allData["list_file"]=nas.file.list_file;
         allData["list_link"]=nas.link.list_link;
-        const { dates, fileData, linkData } = this.parseData(allData);
+        allData["list_json"]=nas.json.list_data;
+        const { dates, fileData, linkData,jsonData } = this.parseData(allData);
         const ctx = document.getElementById('myChart').getContext('2d');
         new Chart(ctx, {
             type: nas.chart.type,
@@ -25,6 +26,13 @@ class CR_Nas_Chart{
                         data: linkData,
                         borderColor: '#508D4E',
                         backgroundColor: '#D6EFD8',
+                        fill: false
+                    },
+                    {
+                        label: 'json',
+                        data: jsonData,
+                        borderColor: '#C63C51',
+                        backgroundColor: '#C63C51',
                         fill: false
                     }
                 ]
@@ -50,10 +58,12 @@ class CR_Nas_Chart{
         const parseDate = dateString => new Date(dateString).toISOString().split('T')[0];
         const files = data.list_file.map(file => ({ date: parseDate(file.timeCreated) }));
         const links = data.list_link.map(link => ({ date: parseDate(link.date_create) }));
-        const dates = [...new Set([...files.map(file => file.date), ...links.map(link => link.date)])].sort();
+        const jsons = data.list_json.map(json => ({ date: parseDate(json.date_create) }));
+        const dates = [...new Set([...files.map(file => file.date), ...links.map(link => link.date),...jsons.map(json=>json.date)])].sort();
         const fileData = dates.map(date => files.filter(f => f.date === date).length);
         const linkData = dates.map(date => links.filter(l => l.date === date).length);
-        return { dates, fileData, linkData };
+        const jsonData = dates.map(date => jsons.filter(j => j.date === date).length);
+        return { dates, fileData, linkData,jsonData };
     }
 
     show_chart_line(){
