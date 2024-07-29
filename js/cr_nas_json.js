@@ -60,6 +60,13 @@ class CR_Nas_Json {
                     return false;
                 });
                 $(dataItem).find(".tr_list_btn").append(btn_data);
+
+                let btn_json_to_lang=$('<button class="btn btn-sm btn-success btn_data m-1"><i class="fas fa-globe-europe"></i> Send to LangDB</button>');
+                $(btn_json_to_lang).click(()=>{
+                    nas.langDB.loadData(d.data);
+                    return false;
+                });
+                $(dataItem).find(".tr_list_btn").append(btn_json_to_lang);
             }else{
                 let btn_paste=$('<button class="btn btn-sm btn-info btn_paste"><i class="fas fa-paste"></i> Paste json</button>');
                 $(btn_paste).click(() => {

@@ -177,8 +177,9 @@ class CR_Nas{
     }
 
     add_log(data,type_sys="object"){
-      data["type_sys"]=type_sys;
-      this.log_obj.push(data);
+      var objNew= Object.assign({}, data);
+      objNew["type_sys"]=type_sys;
+      this.log_obj.push(objNew);
       this.show_log();
     }
 

@@ -71,7 +71,7 @@ class CR_Nas_LangDB{
                             if(Nas_langDB.type_import=="all"){
                                 Nas_langDB.lang="en";
                                 Nas_langDB.obj_lang=jsonContent;
-                                Nas_langDB.loadByObject(jsonContent);
+                                Nas_langDB.loadByObject();
                             }else{
                                 Nas_langDB.import_object_json_one(jsonContent);
                             }
@@ -207,6 +207,13 @@ class CR_Nas_LangDB{
     save_to_json(){
         nas_json.add(this.obj_lang,"","Lang Editor database");
         cr.msg("Save to json database success!","Save to json Database","success");
+    }
+
+    loadData(data){
+        console.log(data);
+        this.lang="en";
+        this.obj_lang=data;
+        this.show();
     }
 }
 var Nas_langDB=new CR_Nas_LangDB();

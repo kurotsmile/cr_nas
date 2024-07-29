@@ -1,6 +1,7 @@
 class CR_Nas_Link{
 
     list_link=[];
+    tag_show="";
 
     onLoad(){
         if(localStorage.getItem("list_link")!=null) this.list_link=JSON.parse(localStorage.getItem("list_link"));
@@ -33,12 +34,29 @@ class CR_Nas_Link{
     }
 
     show_list(){
+        this.show_list_by_data(this.list_link);
+    }
+
+    show_list_by_data(data_list){
         var html='';
         html+='<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">';
 
         html+='<h2 class="h2 text-left">Link Manager</h2>';
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
             html+='<div class="btn-group mr-2">';
+            
+                html+='<div class="dropdown">';
+                    html+='<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">';
+                        html+='<i class="fas fa-filter"></i> Filter by tag';
+                    html+='</button>';
+                    html+='<div class="dropdown-menu">';
+                        html+='<a class="dropdown-item  '+(nas.link.tag_show===""?"active":"")+'" href="#" onclick="nas.link.show_list_by_tag(\'\');return false;">All</a>';
+                        $.each(nas.tag.list_tag,function(index,t){
+                            html+='<a class="dropdown-item '+(t.name===nas.link.tag_show?"active":t.name)+'" href="#" onclick="nas.link.show_list_by_tag(\''+t.name+'\');return false;">'+t.name+'</a>';
+                        })
+                    html+='</div>';
+                html+='</div>';
+
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.show_add();return false"><i class="fas fa-plus-square"></i> Add Link</button>';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.paste();return false"><i class="fas fa-clipboard"></i> Paste clipboard</button>';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.export();return false"><i class="fas fa-file-download"></i> Export</button>';
@@ -55,11 +73,11 @@ class CR_Nas_Link{
         html+='</div>';
         $("#box_main").html(html);
 
-        this.list_link.sort(function(a, b) {
+        data_list.sort(function(a, b) {
             return new Date(b.date_create) - new Date(a.date_create);
         });
         
-        $.each(this.list_link,function(index,l){
+        $.each(data_list,function(index,l){
             var tItemm=$(`
                 <tr>
                     <td><i class="fas fa-link"></i></td>
@@ -153,6 +171,21 @@ class CR_Nas_Link{
 
     export(){
         cr.download(this.list_link,"list_link.json");
+    }
+
+    show_list_by_tag(tag){
+        nas.link.tag_show=tag;
+        if(tag==""){
+            nas.link.show_list_by_data(nas.link.list_link);
+        }else{
+            var list_link_tag=[];
+            $.each(nas.link.list_link,function(index,l){
+                if(l.tag!=null){
+                    if(l.tag==tag) list_link_tag.push(l);
+                }
+            });
+            nas.link.show_list_by_data(list_link_tag);
+        }
     }
 }
 
