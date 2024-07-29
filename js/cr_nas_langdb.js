@@ -21,10 +21,11 @@ class CR_Nas_LangDB{
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
 
                 html+='<div class="btn-group mr-2">';
+                    html+='<button onClick="Nas_langDB.save();" class="btn btn-sm btn-outline-success"><i class="fas fa-save"></i> Save</button>';
                     html+='<form class="form-inline">';
                     html+='<div class="input-group">';
                     html+='<div class="input-group-prepend">';
-                        html+='<span class="input-group-text"><i class="fas fa-cloud-upload-alt mr-1"></i>  Upload</span>';
+                        html+='<span class="input-group-text"><i class="fas fa-cloud-upload-alt mr-1"></i></span>';
                         html+='</div>';
                         html+='<div class="custom-file">';
                         html+='<input type="file" class="custom-file-input" id="fileInput">';
@@ -40,7 +41,7 @@ class CR_Nas_LangDB{
 
                 html+='<div class="btn-group mr-2">';
                     html+='<button class="btn btn-sm btn-outline-secondary" onclick="Nas_langDB.show_add_field();return false"><i class="fas fa-plus-square"></i> Add Field</button>';
-                    html+='<button class="btn btn-sm btn-outline-secondary" onclick="Nas_langDB.export();return false"><i class="fas fa-file-download"></i> Export</button>';
+                    html+='<button class="btn btn-sm btn-outline-secondary" onclick="Nas_langDB.export();return false"><i class="fas fa-file-download"></i></button>';
                 html+='</div>';
             html+='</div>';
         html+='</div>';
@@ -54,6 +55,7 @@ class CR_Nas_LangDB{
         html+='<div class="table-responsive" id="list_btn">';
             html+='<button onClick="Nas_langDB.save();" class="btn btn-lg btn-success m-1"><i class="fas fa-save"></i> Save</button>';
             html+='<button class="btn btn-lg btn-success m-1" onclick="Nas_langDB.export();return false"><i class="fas fa-file-download"></i> Export</button>';
+            html+='<button class="btn btn-success m-1" onclick="Nas_langDB.save_to_json();return false"><i class="fas fa-database"></i> Save to json</button>';
             html+='<button onClick="Nas_langDB.download_obj_json_cur();" class="btn btn-light m-1"><i class="fas fa-file-download"></i> Download Object Curnet</button>';
             html+='<button class="btn btn-light m-1" onclick="nas.langDB.paste_object();return false"><i class="fas fa-clipboard"></i> Paste clipboard</button>';
         html+='</div>';
@@ -91,6 +93,11 @@ class CR_Nas_LangDB{
         $(".inp_db").each(function(index,emp){
             var k=$(emp).attr("db-key");
             if(data[k]!=null) $(emp).val(data[k]);
+            delete data[k];
+        });
+
+        $.each(data,function(k,v){
+            $("#list_db_field").append(cr_data.itemField(k,v));
         });
     }
 
@@ -195,6 +202,11 @@ class CR_Nas_LangDB{
             Nas_langDB.import_object_json_one(JSON.parse(txt));
             nas.add_log(JSON.parse(txt));
         });
+    }
+
+    save_to_json(){
+        nas_json.add(this.obj_lang,"","Lang Editor database");
+        cr.msg("Save to json database success!","Save to json Database","success");
     }
 }
 var Nas_langDB=new CR_Nas_LangDB();

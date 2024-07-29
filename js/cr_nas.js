@@ -219,6 +219,19 @@ class CR_Nas{
       this.act_menu("json");
       nas.json.show_list();
     }
+
+    get_field_customer(){
+      var fieldCustomer={};
+      var tag={};
+      tag["type"]="list";
+      tag["datas"]=[];
+      tag["datas"].push({value:"",label:"None"});
+      $.each(nas.tag.list_tag,function(index,t){
+        tag["datas"].push({value:t.name,label:t.name});
+      });
+      fieldCustomer["tag"]=tag;
+      return fieldCustomer;
+    }
 }
 
 var nas;

@@ -60,6 +60,17 @@ class CR_Nas_Json {
                     return false;
                 });
                 $(dataItem).find(".tr_list_btn").append(btn_data);
+            }else{
+                let btn_paste=$('<button class="btn btn-sm btn-info btn_paste"><i class="fas fa-paste"></i> Paste json</button>');
+                $(btn_paste).click(() => {
+                    cr.paste(null,(txt)=>{
+                        nas.json.list_data[index]["data"]=JSON.parse(txt);
+                        nas.json.save();
+                        nas.json.show_list();
+                    });
+                    return false;
+                });
+                $(dataItem).find(".tr_list_btn").append(btn_paste);
             }
 
             $("#list_data").append(dataItem);
@@ -74,7 +85,8 @@ class CR_Nas_Json {
             "name":name,
             "note": tip,
             "date_create": cr_data.convertISOToLocalDatetime(),
-            "data":data
+            "data":data,
+            "tag":""
         };
         nas.json.list_data.push(dataTemplate);
         nas.json.save();
@@ -86,7 +98,8 @@ class CR_Nas_Json {
             "id_sys": "data" + cr.create_id(5),
             "name": "",
             "note": "",
-            "date_create": cr_data.convertISOToLocalDatetime()
+            "date_create": cr_data.convertISOToLocalDatetime(),
+            "tag":""
         };
         cr_data.add(dataTemplate, (data) => {
             if (data.name !== "") {
@@ -98,7 +111,7 @@ class CR_Nas_Json {
             } else {
                 cr.msg("Name data cannot be null!", "Add data fail", "error");
             }
-        });
+        },nas.get_field_customer());
         cr.box_title("Add Data Json");
     }
 
@@ -112,7 +125,7 @@ class CR_Nas_Json {
             nas.json.list_data[index] = data;
             nas.json.show_list();
             nas.json.save();
-        });
+        },nas.get_field_customer());
     }
 
     delete(index) {

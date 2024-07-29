@@ -11,6 +11,7 @@ class CR_Nas_Link{
             "id_sys":"link"+cr.create_id(5),
             "url":"",
             "note":"",
+            "tag":"",
             "date_create":cr_data.convertISOToLocalDatetime()
         };
         cr_data.add(linkData,(data)=>{
@@ -23,7 +24,7 @@ class CR_Nas_Link{
             }else{
                 cr.msg("Url link not null!","Add link fail","error");
             }
-        });
+        },nas.get_field_customer());
         cr.box_title("Add link");
     }
 
@@ -40,8 +41,7 @@ class CR_Nas_Link{
             html+='<div class="btn-group mr-2">';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.show_add();return false"><i class="fas fa-plus-square"></i> Add Link</button>';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.paste();return false"><i class="fas fa-clipboard"></i> Paste clipboard</button>';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.import_all();return false">Import</button>';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.export_all();return false"><i class="fas fa-file-download"></i> Export</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.link.export();return false"><i class="fas fa-file-download"></i> Export</button>';
             html+='</div>';
             html+='</div>';
         html+='</div>';
@@ -109,7 +109,7 @@ class CR_Nas_Link{
             nas.link.list_link[index]=data;
             nas.link.show_list();
             nas.link.save();
-        });
+        },nas.get_field_customer());
     }
 
     paste(){
@@ -139,6 +139,10 @@ class CR_Nas_Link{
         } catch (_) {
             return false; 
         }
+    }
+
+    export(){
+        cr.download(this.list_link,"list_link.json");
     }
 }
 

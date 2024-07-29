@@ -29,9 +29,7 @@ class CR_Nas_File{
         html+='<h2 class="h2 text-left">File Manager</h2>';
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
             html+='<div class="btn-group mr-2">';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.add_db();return false"><i class="fas fa-plus-square"></i> Add DB</button>';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.import_all();return false">Import</button>';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.export_all();return false"><i class="fas fa-file-download"></i> Export</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.file.export();return false"><i class="fas fa-file-download"></i> Export</button>';
             html+='</div>';
             html+='</div>';
         html+='</div>';
@@ -122,6 +120,10 @@ class CR_Nas_File{
             return acc;
         }, {});
     };
+
+    export(){
+        cr.download(this.list_file,"list_file.json");
+    }
 }
 
 var nas_file=new CR_Nas_File();
