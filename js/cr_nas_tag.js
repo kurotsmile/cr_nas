@@ -29,11 +29,15 @@ class CR_Nas_Tag{
         $("#box_main").html(html);
 
         $.each(this.list_tag,function(index,t){
+            var leng_links=0;
+            if(t.links!=null) leng_links=t.links.length;
             var tItemm=$(`
                 <tr>
                     <td><i class="fas fa-file"></i> ${t.name}</td>
                     <td>${t.note}</td>
+                    <td class="btn_links" role="button">${leng_links} <i class="fas fa-external-link-square-alt"></i></td>
                     <td class="tr_list_btn">
+                        <button class="btn btn-sm btn-success btn_add_link"><i class="fas fa-edit"></i> Add Link</button>
                         <button class="btn btn-sm btn-warning btn_edit"><i class="fas fa-edit"></i> Edit</button>
                         <button class="btn btn-sm btn-danger btn_del"><i class="fas fa-trash"></i> Delete</button>
                     </td>
@@ -51,6 +55,30 @@ class CR_Nas_Tag{
 
             $(tItemm).find(".btn_edit").click(()=>{
                 nas.tag.edit(index);
+                return false;
+            });
+
+            $(tItemm).find(".btn_add_link").click(()=>{
+                cr.input("Add link","Enter Link",(val)=>{
+                    nas.tag.add_link(index,val);
+                });
+                return false;
+            });
+
+            $(tItemm).find(".btn_links").click(()=>{
+                cr_data.info(t.links);
+                var btn_compare=cr.btn("Compare");
+                $(btn_compare).click(()=>{
+                    $(".inp_db").each(function(index,emp){
+                        var link_json=$(emp).attr("db-val");
+                        link_json=decodeURIComponent(link_json);
+                        cr.get_json(link_json,(data)=>{
+                            if(data["all_item"]) data=data["all_item"];
+                            $(emp).append('<td>'+Object.keys(data).length+' <i class="fas fa-object-group"></i> </td>');
+                        });
+                    });
+                });
+                cr.add_btn_box(btn_compare);
                 return false;
             });
 
@@ -95,9 +123,9 @@ class CR_Nas_Tag{
     edit(index){
         var objEdit=this.list_tag[index];
         cr_data.edit(objEdit,(data)=>{
-            nas.file.list_tag[index]=data;
-            nas.file.show_list();
-            nas.file.save();
+            nas.tag.list_tag[index]=data;
+            nas.tag.show_list();
+            nas.tag.save();
         });
     }
 
@@ -109,6 +137,17 @@ class CR_Nas_Tag{
 
     export(){
         cr.download(this.list_tag,"list_tag.json");
+    }
+
+    add_link(index,link){
+        if(nas.tag.list_tag[index].links==null){
+            nas.tag.list_tag[index].links=[link];
+        }else{
+            nas.tag.list_tag[index].links.push(link);
+        }
+        nas.tag.show_list();
+        nas.tag.save();
+        cr.msg("Add link for tag manager success","Add link","success");
     }
 }
 var nas_tag=new CR_Nas_Tag();
