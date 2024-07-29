@@ -115,6 +115,7 @@ class CR_Nas_Link{
     edit(index){
         var objEdit=this.list_link[index];
         cr_data.edit(objEdit,(data)=>{
+            console.log(data);
             nas.link.list_link[index]=data;
             nas.link.show_list();
             nas.link.save();

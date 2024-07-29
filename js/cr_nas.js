@@ -225,6 +225,7 @@ class CR_Nas{
       var tag={};
       tag["type"]="list";
       tag["datas"]=[];
+      tag["name"]="tag";
       tag["datas"].push({value:"",label:"None"});
       $.each(nas.tag.list_tag,function(index,t){
         tag["datas"].push({value:t.name,label:t.name});
