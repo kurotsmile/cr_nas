@@ -86,6 +86,7 @@ class CR_Nas_LangDB{
                 reader.readAsText(file);
             }
           });
+        
         this.loadByObject();
     }
 
@@ -144,6 +145,25 @@ class CR_Nas_LangDB{
             var val_field='';
             if(objCur[k]!=null) val_field=objCur[k];
             $("#list_db_field").append(cr_data.itemField(k,val_field,null,v));
+        });
+
+        $(".inp_db").each(function(index,emp){
+            var p=$(emp).parent();
+            var db_key=$(emp).attr("db-key");
+            var txt=$("#"+db_key+"_tip").html();
+            var btn_translate=$('<button class="btn btn-light input-group-text"><i class="fas fa-language"></i></button>');
+            $(btn_translate).click(function(){
+                $(this).removeClass("btn-light").removeClass("input-group-text").addClass("btn-success");
+                window.open("https://translate.google.com/?sl=en&tl="+nas.langDB.lang+"&text="+encodeURIComponent(txt)+"&op=translate","blank");
+            });
+
+            var btn_translate_auto=$('<button class="btn btn-light input-group-text"><i class="fas fa-globe-americas"></i></button>');
+            $(btn_translate_auto).click(function(){
+                cr.tr(txt,$(emp),nas.langDB.lang);
+                return false;
+            });
+            $(p).find(".input-group-append").append(btn_translate);
+            $(p).find(".input-group-append").append(btn_translate_auto);
         });
     }
 

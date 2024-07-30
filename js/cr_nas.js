@@ -8,6 +8,7 @@ class CR_Nas{
         cr.onLoad();
         cr.setVer("0.0.2");
         cr.setColor("#88D66C");
+        cr.key_api_google_translate="AIzaSyCN8IEJvdUvoxFbnr0M3xyByr6pJmNsCCk";
         cr.add_btn_top();
         cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
         cr.loadJs("js/cr_nas_file.js","nas_file","onLoad");
