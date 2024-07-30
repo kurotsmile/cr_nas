@@ -159,7 +159,7 @@ class CR_Nas_LangDB{
 
             var btn_translate_auto=$('<button class="btn btn-light input-group-text"><i class="fas fa-globe-americas"></i></button>');
             $(btn_translate_auto).click(function(){
-                cr.tr(txt,$(emp),nas.langDB.lang);
+                cr.tr(txt,emp,nas.langDB.lang);
                 return false;
             });
             $(p).find(".input-group-append").append(btn_translate);
