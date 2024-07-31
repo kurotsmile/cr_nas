@@ -46,11 +46,13 @@ class CR_Nas_LangDB{
             html+='</div>';
         html+='</div>';
 
-        html+='<div class="table-responsive" id="list_country"></div>';
+        html+='<div class="table-responsive border-bottom" id="list_country"></div>';
 
         html+='<div class="table-responsive">';
             html+='<div class="table table-striped table-hover table-sm text-left" id="list_db_field"></div>';
         html+='</div>';
+
+        html+='<div class="table-responsive border-bottom border-top" id="list_country2"></div>';
 
         html+='<div class="table-responsive" id="list_btn">';
             html+='<button onClick="Nas_langDB.save();" class="btn btn-lg btn-success m-1"><i class="fas fa-save"></i> Save</button>';
@@ -114,7 +116,7 @@ class CR_Nas_LangDB{
     }
 
     loadDataListCountry(data){
-        $("#list_country").html('');
+        $("#list_country,#list_country2").html('');
         $.each(data,function(index,c){
             var sClass='btn-light';
             if(Nas_langDB.obj_lang!=null){
@@ -127,7 +129,7 @@ class CR_Nas_LangDB{
                 Nas_langDB.lang=c.key;
                 Nas_langDB.show();
             });
-            $("#list_country").append(itemC);
+            $("#list_country,#list_country2").append(itemC);
         });
     }
 
