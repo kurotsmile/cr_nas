@@ -119,10 +119,14 @@ class CR_Nas_LangDB{
         $("#list_country,#list_country2").html('');
         $.each(data,function(index,c){
             var sClass='btn-light';
+            var s_length_field='';
             if(Nas_langDB.obj_lang!=null){
-                if(Nas_langDB.obj_lang[c.key]!=null) sClass="btn-success";
+                if(Nas_langDB.obj_lang[c.key]!=null){
+                    sClass="btn-success";
+                    s_length_field='<span style="font-size:11px" class="text-warning">'+Object.keys(Nas_langDB.obj_lang[c.key]).length+'</span>';
+                }
             }
-            var itemC=$('<button role="button" class="btn m-lang '+(Nas_langDB.lang===c.key? "active":c.key)+' btn-sm m-1 '+sClass+'">'+c.name+'</button>');
+            var itemC=$('<button role="button" title="'+c.name+'" class="btn text-uppercase m-lang '+(Nas_langDB.lang===c.key? "active":c.key)+' btn-sm m-1 '+sClass+'">'+c.key+' '+s_length_field+'</button>');
             $(itemC).click(function(){
                 $(".m-lang").removeClass("active");
                 $(this).addClass("active");
