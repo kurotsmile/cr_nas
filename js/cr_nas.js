@@ -108,7 +108,14 @@ class CR_Nas{
       objExport["list_tag"]=nas.tag.list_tag;
       objExport["list_json"]=nas.json.list_data;
       objExport["list_firestore"]=nas.firestore.list_firestore;
-      cr.download(objExport,"backup.json");
+      objExport["list_collection"]=nas.collection.list_collection;
+
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+      const fileName = `nas_${day}_${month}_${year}.json`;
+      cr.download(objExport,fileName);
     }
 
     import(){
@@ -164,7 +171,17 @@ class CR_Nas{
                       nas.json.list_data=jsonContent["list_json"];
                       nas.json.save();
                     }
+
+                    if(jsonContent["list_firestore"]){
+                      nas.firestore.list_firestore=jsonContent["list_firestore"];
+                      nas.firestore.save();
+                    }
                     
+                    if(jsonContent["list_collection"]){
+                      nas.collection.list_collection=jsonContent["list_collection"];
+                      nas.collection.save();
+                    }
+
                     Swal.close();
                 } catch (error) {
                     cr.msg(error,"Error","error");
