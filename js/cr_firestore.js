@@ -1,21 +1,21 @@
-class CR_Nas_DB{
+class CR_Firestore{
 
-    list_db=[];
+    list_firestore=[];
 
     onLoad(){
-        if(localStorage.getItem("list_db")!=null) this.list_db=JSON.parse(localStorage.getItem("list_db"));
+        if(localStorage.getItem("list_firestore")!=null) this.list_firestore=JSON.parse(localStorage.getItem("list_firestore"));
     }
 
     show_list_for_dashboard(){
-        $.each(this.list_db,function(index,db){
+        $.each(this.list_firestore,function(index,db){
             db["index"]=index;
             var dbServerItem=$(`
                 <div class="col-6 col-md-3 col-lg-3">
-                    <div role="button" class="card bg-dark border-rounder text-white w-100 m-1">
+                    <div role="button" class="card bg-success border-rounder text-white w-100 m-1">
                     <div class="card-body">
-                        <h5 class="card-title"><i class="fas fa-server"></i> ${db.name}</h5>
-                        <small class="card-text"><i class="fas fa-drum-steelpan"></i> ${db.id}
-                            <i class="fas fa-database"></i> size:${nas.file.formatBytes(nas.file.SizePerBucket[db.id])}
+                        <h5 class="card-title"><i class="fas fa-fire-alt"></i> ${db.name}</h5>
+                        <small class="card-text"><i class="fas fa-fire-alt"></i> ${db.id}
+                            <i class="fas fa-database"></i> Firestore
                         </small>
                         <button class="btn btn-sm btn-dark btn_edit"><i class="fas fa-edit"></i> Edit</button>
                     </div>
@@ -29,9 +29,6 @@ class CR_Nas_DB{
                 return false;
             });
 
-            $(dbServerItem).click(()=>{
-                nas.upload_file(db.id,db.api_key);
-            });
             $("#list_db").append(dbServerItem);
         });
     }
@@ -44,9 +41,9 @@ class CR_Nas_DB{
             "id_sys":"db"+cr.create_id(4)
         };
         cr_data.edit(data_db_new,(data)=>{
-            nas.db.list_db.push(data);
-            nas.db.save();
-            nas.db.show_list_db();
+            nas.firestore.list_firestore.push(data);
+            nas.firestore.save();
+            nas.firestore.show_list();
             cr.msg("Add databas success!","Add Db","Success");
         });
     }
@@ -56,20 +53,20 @@ class CR_Nas_DB{
     }
 
     export_all(){
-        cr.download(this.list_db,"list_db.json");
+        cr.download(this.list_firestore,"list_firestore.json");
     }
 
-    show_list_db(){
-        nas.act_menu("db");
+    show_list(){
+        nas.act_menu("firestore");
         var html='';
         html+='<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">';
 
-        html+='<h2 class="h2 text-left">Database Manager</h2>';
+        html+='<h2 class="h2 text-left">FireStore Manager</h2>';
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
             html+='<div class="btn-group mr-2">';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.add_db();return false"><i class="fas fa-plus-square"></i> Add DB</button>';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.import_all();return false">Import</button>';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.db.export_all();return false"><i class="fas fa-file-download"></i> Export</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.firestore.add_db();return false"><i class="fas fa-plus-square"></i> Add DB</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.firestore.import_all();return false">Import</button>';
+                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.firestore.export_all();return false"><i class="fas fa-file-download"></i> Export</button>';
             html+='</div>';
             html+='</div>';
         html+='</div>';
@@ -83,10 +80,10 @@ class CR_Nas_DB{
         html+='</div>';
         $("#box_main").html(html);
 
-        $.each(this.list_db,function(index,db){
+        $.each(this.list_firestore,function(index,db){
             var itemBD=$(`
                 <tr>
-                    <td><i class="fas fa-server"></i> ${db.id}</td>
+                    <td><i class="fas fa-fire-alt"></i> ${db.id}</td>
                     <td>${db.name}</td>
                     <td>${db.api_key}</td>
                     <td>
@@ -100,12 +97,12 @@ class CR_Nas_DB{
             });
 
             $(itemBD).find(".btn_del").click(()=>{
-                nas.db.delete(index);
+                nas.firestore.delete(index);
                 return false;
             });
 
             $(itemBD).find(".btn_edit").click(()=>{
-                nas.db.edit(index);
+                nas.firestore.edit(index);
                 return false;
             });
             $("#list_db").append(itemBD);
@@ -113,23 +110,23 @@ class CR_Nas_DB{
     }
 
     delete(index){
-        this.list_db.splice(index,1);
-        this.show_list_db();
+        this.list_firestore.splice(index,1);
+        this.show_list();
         this.save();
     }
 
     edit(index){
-        var objEdit=this.list_db[index];
+        var objEdit=this.list_firestore[index];
         cr_data.edit(objEdit,(data)=>{
-            nas.db.list_db[index]=data;
-            nas.db.show_list_db();
-            nas.db.save();
+            nas.firestore.list_firestore[index]=data;
+            nas.firestore.show_list();
+            nas.firestore.save();
         });
     }
 
     save(){
-        localStorage.setItem("list_db",JSON.stringify(this.list_db));
+        localStorage.setItem("list_firestore",JSON.stringify(this.list_firestore));
     }
 }
-var nas_db=new CR_Nas_DB();
-nas.db=nas_db;
+var nas_firestore=new CR_Firestore();
+nas.firestore=nas_firestore;

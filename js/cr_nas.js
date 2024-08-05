@@ -10,6 +10,7 @@ class CR_Nas{
         cr.setColor("#88D66C");
         cr.add_btn_top();
         cr.loadJs("js/cr_nas_db.js","nas_db","onLoad");
+        cr.loadJs("js/cr_firestore.js","nas_firestore","onLoad");
         cr.loadJs("js/cr_nas_file.js","nas_file","onLoad");
         cr.loadJs("js/cr_nas_link.js","nas_link","onLoad");
         cr.loadJs("js/cr_nas_tag.js","nas_tag","onLoad");
@@ -30,6 +31,7 @@ class CR_Nas{
         cr.get("dashboard.html?v="+cr.ver,(data)=>{
           $("#box_main").html(data).ready(()=>{
               nas.db.show_list_for_dashboard();
+              nas.firestore.show_list_for_dashboard();
               cr.loadJs("js/cr_nas_chart.js","nas_chart","load_char");
           });
         });
@@ -219,6 +221,10 @@ class CR_Nas{
     show_json(){
       this.act_menu("json");
       nas.json.show_list();
+    }
+
+    show_firestore(){
+      nas.firestore.show_list();
     }
 
     get_field_customer(){
