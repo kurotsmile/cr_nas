@@ -15,6 +15,7 @@ class CR_Nas{
         cr.loadJs("js/cr_nas_link.js","nas_link","onLoad");
         cr.loadJs("js/cr_nas_tag.js","nas_tag","onLoad");
         cr.loadJs("js/cr_nas_json.js","nas_json","onLoad");
+        cr.loadJs("js/cr_firestore_collection.js","nas_collection","onLoad");
         setTimeout(()=>{
           nas.show_dashboard();
         },500)
@@ -106,6 +107,7 @@ class CR_Nas{
       objExport["list_link"]=nas.link.list_link;
       objExport["list_tag"]=nas.tag.list_tag;
       objExport["list_json"]=nas.json.list_data;
+      objExport["list_firestore"]=nas.firestore.list_firestore;
       cr.download(objExport,"backup.json");
     }
 
@@ -225,6 +227,10 @@ class CR_Nas{
 
     show_firestore(){
       nas.firestore.show_list();
+    }
+
+    show_collection(){
+      nas.collection.show_list();
     }
 
     get_field_customer(){

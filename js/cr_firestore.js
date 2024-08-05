@@ -14,7 +14,7 @@ class CR_Firestore{
                     <div role="button" class="card bg-success border-rounder text-white w-100 m-1">
                     <div class="card-body">
                         <h5 class="card-title"><i class="fas fa-fire-alt"></i> ${db.name}</h5>
-                        <small class="card-text"><i class="fas fa-fire-alt"></i> ${db.id}
+                        <small class="card-text">
                             <i class="fas fa-database"></i> Firestore
                         </small>
                         <button class="btn btn-sm btn-dark btn_edit"><i class="fas fa-edit"></i> Edit</button>
@@ -29,6 +29,24 @@ class CR_Firestore{
                 return false;
             });
 
+            if(db.link!=null){
+                var btn_link=$('<button class="btn btn-sm btn-dark btn_edit"><i class="fas fa-link"></i> Open</button>');
+                $(btn_link).click(()=>{ window.open(db.link,"_blank");});
+                $(dbServerItem).find(".card-body").append(btn_link);
+            }
+            
+            var url = `https://firestore.googleapis.com/v1/projects/${db.id}/databases/(default)/documents/about_us/?key=${db.api_key}`;
+            $.ajax({
+                url: url,
+                method: 'GET',
+                success: function(response) {
+                    $(dbServerItem).find(".card-text").append('<small><i class="fas fa-signal"></i> Online</small>');
+                },
+                error: function(xhr, status, error) {
+                    $(dbServerItem).find(".card-text").append('<small><i class="fas fa-exclamation-triangle"></i> Offline</small>');
+                }
+            });
+
             $("#list_db").append(dbServerItem);
         });
     }
@@ -38,6 +56,7 @@ class CR_Firestore{
             "name":"",
             "id":"",
             "api_key":"",
+            "link":"",
             "id_sys":"db"+cr.create_id(4)
         };
         cr_data.edit(data_db_new,(data)=>{
@@ -46,10 +65,6 @@ class CR_Firestore{
             nas.firestore.show_list();
             cr.msg("Add databas success!","Add Db","Success");
         });
-    }
-
-    import_all(){
-
     }
 
     export_all(){
@@ -65,7 +80,6 @@ class CR_Firestore{
             html+='<div class="btn-toolbar mb-2 mb-md-0">';
             html+='<div class="btn-group mr-2">';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.firestore.add_db();return false"><i class="fas fa-plus-square"></i> Add DB</button>';
-                html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.firestore.import_all();return false">Import</button>';
                 html+='<button class="btn btn-sm btn-outline-secondary" onclick="nas.firestore.export_all();return false"><i class="fas fa-file-download"></i> Export</button>';
             html+='</div>';
             html+='</div>';
